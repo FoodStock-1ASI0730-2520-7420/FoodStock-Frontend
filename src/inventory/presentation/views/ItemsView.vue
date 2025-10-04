@@ -1,10 +1,52 @@
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useInventoryStore } from '../../application/useInventoryStore';
-// import { Item } from '../../domain/model/item.entity';
-
+import ItemForm from '../views/ItemsForm.vue';
 
 const store = useInventoryStore();
+
+
+const isModalVisible = ref(false);
+const currentItem = ref({});
+const isEditMode = ref(false);
+
+
+
+
+function openAddItemModal() {
+  isEditMode.value = false;
+  currentItem.value = { id: null, name: '', price: 0.0 };
+  isModalVisible.value = true;
+}
+
+function openEditItemModal(item) {
+  isEditMode.value = true;
+  currentItem.value = JSON.parse(JSON.stringify(item));
+  isModalVisible.value = true;
+}
+
+function closeModal() {
+  isModalVisible.value = false;
+  currentItem.value = {};
+}
+
+
+const handleFormSubmit = async (formData) => {
+  try {
+    if (isEditMode.value) {
+
+      await store.updateItem(formData);
+      alert('Item updated successfully!');
+    } else {
+      // Lógica de ADICIÓN: Llama a la acción addItem del Store
+      await store.addItem(formData);
+      alert('Item added successfully!');
+    }
+    closeModal();
+  } catch (error) {
+    alert(`Error saving item: ${error.message}`);
+  }
+};
 
 
 const handleDeleteItem = async (id) => {
@@ -20,7 +62,6 @@ const handleDeleteItem = async (id) => {
 
 
 onMounted(() => {
-
   store.fetchItems();
 });
 </script>
@@ -28,11 +69,11 @@ onMounted(() => {
 <template>
   <div class="items-management">
     <h2>Finished Dishes / Items Management</h2>
-    <p>Total Items: {{ store.itemsCount }}</p>
+    <p>Total Items: {{ store.items.length }}</p>
 
-    <button @click="console.log('Open Item Form')">Add New Item</button>
+    <button @click="openAddItemModal">Add New Item</button>
 
-    <div v-if="store.errors.length" class="error-message">
+    <div v-if="store.errors.length && !store.itemsLoaded" class="error-message">
       <p>Error loading items: {{ store.errors[0].message }}</p>
     </div>
 
@@ -49,9 +90,9 @@ onMounted(() => {
       <tr v-for="item in store.items" :key="item.id">
         <td>{{ item.id }}</td>
         <td>{{ item.name }}</td>
-        <td>${{ item.price.toFixed(2) }}</td>
+        <td>${{ item.price ? item.price.toFixed(2) : '0.00' }}</td>
         <td>
-          <button @click="console.log('Edit Item', item.id)">Edit</button>
+          <button @click="openEditItemModal(item)">Edit</button>
           <button @click="handleDeleteItem(item.id)">Delete</button>
         </td>
       </tr>
@@ -61,10 +102,20 @@ onMounted(() => {
     <p v-else-if="store.itemsLoaded">No items found.</p>
     <p v-else>Loading items...</p>
   </div>
+
+  <div v-if="isModalVisible" class="modal-overlay" @click.self="closeModal">
+    <div class="modal-content">
+      <ItemForm
+          :item="currentItem"
+          :is-edit="isEditMode"
+          @submit="handleFormSubmit"
+          @close="closeModal"
+      />
+    </div>
+  </div>
 </template>
 
 <style scoped>
-
 table {
   width: 100%;
   border-collapse: collapse;
@@ -77,5 +128,27 @@ th, td {
 }
 .error-message {
   color: red;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.modal-content {
+  background: #222;
+  color: white;
+  padding: 30px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 </style>

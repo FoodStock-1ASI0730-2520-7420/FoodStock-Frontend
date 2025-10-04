@@ -1,1 +1,6 @@
-{}
+{
+  "option": {
+    "home": "Inicio",
+    "inventory": "Inventario"
+  }
+}
