@@ -1,0 +1,31 @@
+{
+  "sales": [
+    {
+      "id": 1,
+      "creationDate": "4/10/2025",
+      "creationTime": "17:08:07",
+      "saleType": "in-person",
+      "paymentMethod": "cash",
+      "total": 70,
+      "waiter": "Mesero"
+    }
+  ],
+  "saleItems": [
+    {
+      "name": "Arroz",
+      "priceUnit": 20,
+      "quantity": 2,
+      "subtotal": 40,
+      "saleId": 1,
+      "id": 1
+    },
+    {
+      "name": "Comida",
+      "priceUnit": 15,
+      "quantity": 2,
+      "subtotal": 30,
+      "saleId": 1,
+      "id": 2
+    }
+  ]
+}

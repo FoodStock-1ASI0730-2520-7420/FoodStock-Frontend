@@ -1,1 +1,11 @@
-{}
+{
+  "sale":{
+    "new-title": "Create New Sale",
+    "edit-title": "Edit Sale",
+    "save": "Save",
+    "cancel": "Cancel",
+    "saleType": "Type of sale",
+    "paymentMethod": "Payment method",
+    "waiter": "Waiter"
+  }
+}
