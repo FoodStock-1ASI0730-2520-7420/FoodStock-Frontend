@@ -17,13 +17,7 @@ const items = [
 </script>
 
 <template>
-  <aside class="sidebar">
-    <pv-menu :model="items">
-      <template #start>
-        <h1>FoodStock</h1>
-      </template>
-    </pv-menu>
-  </aside>
+
   <div class="header">
     <pv-toolbar class="bg-primary">
       <template #start>
