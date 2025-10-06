@@ -3,74 +3,30 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 import { ItemService } from "./item.service.js";
+import { ProductService } from "./product.service.js";
 import { Item } from "../domain/model/item.entity.js";
-// import { Product } from "../domain/model/product.entity.js"; aun no usado :v
-// Instantiate the Service. This is the store's dependency from the Application Layer.
+import Product from '../domain/model/product.entity.js';
+
 const itemService = new ItemService();
+const productService = new ProductService();
 
-/**
- * Inventory Store: Manages all state and CRUD operations for the Inventory context.
- * It serves as the single entry point for Vue components to access data and perform actions.
- */
 export const useInventoryStore = defineStore('inventory', () => {
-
-    // --- STATE (Reactive Data) ---
-
-    /**
-     * List of Item entities (Dishes/Finished Products).
-     * @type {import('vue').Ref<Item[]>}
-     */
+    // --- STATE ---
     const items = ref([]);
-
-    /**
-     * Placeholder for Product entities (Raw Materials).
-     * @type {import('vue').Ref<Product[]>}
-     */
     const products = ref([]);
-
-    /**
-     * List of errors encountered during operations.
-     * @type {import('vue').Ref<Error[]>}
-     */
     const errors = ref([]);
-
-    /**
-     * Flag to indicate if Item entities have been loaded.
-     * @type {import('vue').Ref<boolean>}
-     */
     const itemsLoaded = ref(false);
-
-    /**
-     * Flag to indicate if Product entities have been loaded.
-     * @type {import('vue').Ref<boolean>}
-     */
     const productsLoaded = ref(false);
 
-
-    // --- GETTERS (Computed Properties) ---
-
-    /**
-     * Returns the number of loaded Item entities.
-     * @type {import('vue').ComputedRef<number>}
-     */
+    // --- GETTERS ---
     const itemsCount = computed(() => items.value.length);
+    const productsCount = computed(() => products.value.length);
 
-
-    // --- ACTIONS (Item CRUD Operations) ---
-
-    /**
-     * Action: Fetches Item entities via the ItemService and updates state.
-     * @function
-     * @returns {void}
-     */
+    // --- ACTIONS (Item) ---
     async function fetchItems() {
         if (itemsLoaded.value) return;
-
         try {
-            // Call the Application Layer (ItemService)
             const fetchedItems = await itemService.getItems();
-
-            // Mutate the reactive state
             items.value = fetchedItems;
             itemsLoaded.value = true;
         } catch (error) {
@@ -78,19 +34,9 @@ export const useInventoryStore = defineStore('inventory', () => {
             errors.value.push(error);
         }
     }
-
-    /**
-     * Action: Adds a new Item via the ItemService and updates state.
-     * @function
-     * @param {Item} itemEntity - The Item entity to add.
-     * @returns {void}
-     */
     async function addItem(itemEntity) {
         try {
-            // Call the Application Layer (ItemService)
             const newEntity = await itemService.createItem(itemEntity);
-
-            // Mutate the state optimistically
             items.value.push(newEntity);
         } catch (error) {
             console.error("Store Error in addItem:", error);
@@ -98,19 +44,9 @@ export const useInventoryStore = defineStore('inventory', () => {
             throw error;
         }
     }
-
-    /**
-     * Action: Deletes an Item via the ItemService and updates state.
-     * @function
-     * @param {number|string} id - The ID of the Item to delete.
-     * @returns {void}
-     */
     async function deleteItem(id) {
         try {
-            // Call the Application Layer (ItemService)
             await itemService.deleteItem(id);
-
-            // Mutate the state optimistically
             const index = items.value.findIndex(i => i.id === id);
             if (index !== -1) items.value.splice(index, 1);
         } catch (error) {
@@ -118,18 +54,9 @@ export const useInventoryStore = defineStore('inventory', () => {
             errors.value.push(error);
         }
     }
-
-    /**
-     * Action: Updates an existing Item via the ItemService and updates state.
-     * @function
-     * @param {Item} itemEntity - The Item entity with updated data (must include ID).
-     * @returns {void}
-     */
     async function updateItem(itemEntity) {
         try {
             const updatedEntity = await itemService.updateItem(itemEntity);
-
-            // Find and replace the updated item in the local array
             const index = items.value.findIndex(i => i.id === updatedEntity.id);
             if (index !== -1) items.value[index] = updatedEntity;
         } catch (error) {
@@ -139,9 +66,51 @@ export const useInventoryStore = defineStore('inventory', () => {
         }
     }
 
+    // --- ACTIONS (Product) ---
+    async function fetchProducts() {
+        if (productsLoaded.value) return;
+        try {
+            const fetchedProducts = await productService.getProducts();
+            products.value = fetchedProducts;
+            productsLoaded.value = true;
+        } catch (error) {
+            console.error("Store Error in fetchProducts:", error);
+            errors.value.push(error);
+        }
+    }
+    async function addProduct(productEntity) {
+        try {
+            const newEntity = await productService.createProduct(productEntity);
+            products.value.push(newEntity);
+        } catch (error) {
+            console.error("Store Error in addProduct:", error);
+            errors.value.push(error);
+            throw error;
+        }
+    }
+    async function deleteProduct(id) {
+        try {
+            await productService.deleteProduct(id);
+            const index = products.value.findIndex(p => p.idProduct === id);
+            if (index !== -1) products.value.splice(index, 1);
+        } catch (error) {
+            console.error("Store Error in deleteProduct:", error);
+            errors.value.push(error);
+        }
+    }
+    async function updateProduct(productEntity) {
+        try {
+            const updatedEntity = await productService.updateProduct(productEntity);
+            const index = products.value.findIndex(p => p.idProduct === updatedEntity.idProduct);
+            if (index !== -1) products.value[index] = updatedEntity;
+        } catch (error) {
+            console.error("Store Error in updateProduct:", error);
+            errors.value.push(error);
+            throw error;
+        }
+    }
 
-    // --- RETURN (Exposed Store Methods/State) ---
-
+    // --- RETURN ---
     return {
         // State
         items,
@@ -152,11 +121,16 @@ export const useInventoryStore = defineStore('inventory', () => {
 
         // Getters
         itemsCount,
+        productsCount,
 
         // Actions
         fetchItems,
         addItem,
         updateItem,
         deleteItem,
+        fetchProducts,
+        addProduct,
+        updateProduct,
+        deleteProduct,
     }
 });

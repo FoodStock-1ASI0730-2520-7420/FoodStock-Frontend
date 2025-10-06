@@ -1,6 +1,7 @@
 import {createRouter, createWebHistory} from "vue-router";
 import Home from "./shared/presentation/views/home.vue";
 import ItemsView from './Inventory/presentation/views/ItemsView.vue'
+import ProductsView from './Inventory/presentation/views/ProductsView.vue';
 
 // TODO: Define lazy-loaded components for routes
 const pageNotFound = () => import('./shared/presentation/views/page-not-found.vue');
@@ -9,6 +10,8 @@ const routes = [
     { path: '/',                redirect: '/home' },
     { path: '/:pathMatch(.*)*', name: 'not-found', component: pageNotFound, meta: { title: 'Page Not Found' } },
     {path: '/inventory/items', name: 'ItemsManagement', component: ItemsView, meta: { title: 'Manage Items' } },
+    { path: '/inventory/products', name: 'ProductsManagement', component: ProductsView, meta: { title: 'Manage Products' } },
+
 ];
 
 const router = createRouter({

@@ -1,47 +1,28 @@
-// src/Inventory/infrastructure/inventory-api.js
+// src/inventory/infrastructure/inventory-api.js
 
 import { BaseApi } from "../../shared/infrastructure/base-api.js";
 import { BaseEndpoint } from "../../shared/infrastructure/base-endpoint.js";
 import { ItemAssembler } from './item.assembler';
-// import { ProductAssembler } from './product.assembler';
-
+import { ProductAssembler } from './product.assembler';
 
 const itemsEndpointPath = import.meta.env.VITE_ITEMS_ENDPOINT_PATH || 'items';
 const productsEndpointPath = import.meta.env.VITE_PRODUCTS_ENDPOINT_PATH || 'products';
 
-/**
- * InventoryApi class to handle API operations for Inventory context.
- * Extends BaseApi and provides CRUD operations for Items (Finished Dishes) and Products (Raw Materials).
- * * @class
- * @extends BaseApi
- */
 export class InventoryApi extends BaseApi {
-    /**
-     * @type {BaseEndpoint}
-     * @private
-     */
     #itemsEndpoint;
-    /**
-     * @type {BaseEndpoint}
-     * @private
-     */
     #productsEndpoint;
 
-    /**
-     * Initializes endpoints for items and products.
-     */
     constructor() {
         super();
         this.#itemsEndpoint = new BaseEndpoint(this, itemsEndpointPath);
         this.#productsEndpoint = new BaseEndpoint(this, productsEndpointPath);
     }
 
-    // --- ITEM (Finished Dish) API Operations ---
+    // --- Métodos para Item ---
 
     /**
-     * Fetches all items (dishes/finished products).
-     * The result is assembled into an array of Item entities.
-     * @returns {Promise<Item[]>} Promise resolving to an array of Item entities.
+     * Obtiene todos los ítems.
+     * @returns {Promise<Item[]>}
      */
     async getItems() {
         const response = await this.#itemsEndpoint.getAll();
@@ -49,9 +30,9 @@ export class InventoryApi extends BaseApi {
     }
 
     /**
-     * Fetches an item by its ID.
-     * @param {number|string} id - The ID of the item (id).
-     * @returns {Promise<Item>} Promise resolving to the Item entity.
+     * Obtiene un ítem por su ID.
+     * @param {number|string} id
+     * @returns {Promise<Item>}
      */
     async getItemById(id) {
         const response = await this.#itemsEndpoint.getById(id);
@@ -59,10 +40,9 @@ export class InventoryApi extends BaseApi {
     }
 
     /**
-     * Implements createItem() logic: Creates a new item.
-     * The Item entity is converted to a resource before sending.
-     * @param {Item} itemEntity - The Item entity to create.
-     * @returns {Promise<Item>} Promise resolving to the created Item entity.
+     * Crea un nuevo ítem.
+     * @param {Item} itemEntity
+     * @returns {Promise<Item>}
      */
     async createItem(itemEntity) {
         const resource = ItemAssembler.toResource(itemEntity);
@@ -71,28 +51,76 @@ export class InventoryApi extends BaseApi {
     }
 
     /**
-     * Implements editItem() logic: Updates an existing item.
-     * @param {Item} itemEntity - The Item entity to update (must include id).
-     * @returns {Promise<Item>} Promise resolving to the updated Item entity.
+     * Actualiza un ítem existente.
+     * @param {Item} itemEntity
+     * @returns {Promise<Item>}
      */
     async updateItem(itemEntity) {
-        if (!itemEntity.id) throw new Error("Item ID is required for update.");
+        if (!itemEntity.idItem) throw new Error("Item ID is required for update.");
         const resource = ItemAssembler.toResource(itemEntity);
-        const response = await this.#itemsEndpoint.update(itemEntity.id, resource);
+        const response = await this.#itemsEndpoint.update(itemEntity.idItem, resource);
         return ItemAssembler.toDomain(response.data);
     }
 
     /**
-     * Implements deleteItem() logic: Deletes an item by its ID.
-     * @param {number|string} id - The ID of the item to delete.
-     * @returns {Promise<import('axios').AxiosResponse>} Promise resolving to the delete response.
+     * Elimina un ítem por su ID.
+     * @param {number|string} id
+     * @returns {Promise<import('axios').AxiosResponse>}
      */
     deleteItem(id) {
         return this.#itemsEndpoint.delete(id);
     }
 
-    // --- PRODUCT (Raw Material) API Operations (Placeholder) ---
+    // --- Métodos para Product ---
 
-    // Aquí irán los métodos para Product cuando se implemente :v
+    /**
+     * Obtiene todos los productos.
+     * @returns {Promise<Product[]>}
+     */
+    async getProducts() {
+        const response = await this.#productsEndpoint.getAll();
+        return ProductAssembler.toDomainList(response);
+    }
+
+    /**
+     * Obtiene un producto por su ID.
+     * @param {number|string} id
+     * @returns {Promise<Product>}
+     */
+    async getProductById(id) {
+        const response = await this.#productsEndpoint.getById(id);
+        return ProductAssembler.toDomain(response.data);
+    }
+
+    /**
+     * Crea un nuevo producto.
+     * @param {Product} productEntity
+     * @returns {Promise<Product>}
+     */
+    async createProduct(productEntity) {
+        const resource = ProductAssembler.toResource(productEntity);
+        const response = await this.#productsEndpoint.create(resource);
+        return ProductAssembler.toDomain(response.data);
+    }
+
+    /**
+     * Actualiza un producto existente.
+     * @param {Product} productEntity
+     * @returns {Promise<Product>}
+     */
+    async updateProduct(productEntity) {
+        if (!productEntity.idProduct) throw new Error("Product ID is required for update.");
+        const resource = ProductAssembler.toResource(productEntity);
+        const response = await this.#productsEndpoint.update(productEntity.idProduct, resource);
+        return ProductAssembler.toDomain(response.data);
+    }
+
+    /**
+     * Elimina un producto por su ID.
+     * @param {number|string} id
+     * @returns {Promise<import('axios').AxiosResponse>}
+     */
+    deleteProduct(id) {
+        return this.#productsEndpoint.delete(id);
+    }
 }
-// export const inventoryApi = new InventoryApi();
