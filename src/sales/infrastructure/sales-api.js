@@ -53,4 +53,12 @@ export class SalesApi extends BaseApi {
     deleteSaleItem(id) {
         return this.#saleItemsEndpoint.delete(id);
     }
+
+
+
+    
+     getAllSaleItems() {
+        return this.#saleItemsEndpoint.getAll();
+    }
+    
 }
