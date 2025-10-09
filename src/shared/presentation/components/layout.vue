@@ -12,7 +12,8 @@ const toggleDrawer = () => {
   drawer.value = !drawer.value;
 }
 const items = [
-  {label: 'option.home', to: '/home'}
+  {label: 'option.home', to: '/home'},
+  { label: 'option.salesReports', to: '/sales-reports' }
 ];
 </script>
 
