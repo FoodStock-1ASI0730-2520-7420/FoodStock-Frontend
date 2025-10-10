@@ -1,21 +1,13 @@
 <script setup>
 import { ref, watch, defineProps, defineEmits } from 'vue';
-import { Select as PvSelect } from "primevue";
+import {Select as PvSelect} from "primevue";
 
 const props = defineProps({
   product: { type: Object, required: true },
   isEdit: { type: Boolean, default: false }
 });
 
-
-const categories = [
-  { label: $t('categories.fruit'), value: 'fruit' },
-  { label: $t('categories.vegetable'), value: 'vegetable' },
-  { label: $t('categories.spices'), value: 'spices' },
-  { label: $t('categories.proteins'), value: 'proteins' },
-  { label: $t('categories.dairy'), value: 'dairy' }
-];
-
+const categories = [{ label: 'Fruta', value: 'Fruta' }, { label: 'Verdura', value: 'Verdura' }, { label: 'Especias', value: 'Especias' },{ label: 'Proteinas', value: 'Proteinas' },{ label: 'Lacteos', value: 'Lacteos' }];
 const emit = defineEmits(['submit', 'close']);
 const localProduct = ref({});
 
@@ -31,44 +23,37 @@ function handleSubmit() {
 <template>
   <div class="product-form-container">
     <form @submit.prevent="handleSubmit">
-      <h4>{{ isEdit ? $t('products.edit') : $t('products.add') }}</h4>
+      <h4>{{ isEdit ? 'Editar Producto' : 'Agregar Producto' }}</h4>
       <div class="form-field">
-        <label for="name">{{ $t('products.name') }}</label>
+        <label for="name">Nombre</label>
         <input id="name" type="text" v-model="localProduct.name" required />
       </div>
       <div class="form-field">
-        <label for="unitPrice">{{ $t('products.unitPrice') }}</label>
+        <label for="unitPrice">Precio Unitario</label>
         <input id="unitPrice" type="number" step="0.01" v-model.number="localProduct.unitPrice" required />
       </div>
       <div class="form-field">
-        <label for="quantity">{{ $t('products.quantity') }}</label>
+        <label for="quantity">Cantidad</label>
         <input id="quantity" type="number" v-model.number="localProduct.quantity" required />
       </div>
       <div class="form-field">
-        <label for="expirationDate">{{ $t('products.expirationDate') }}</label>
+        <label for="expirationDate">Fecha de Vencimiento</label>
         <input id="expirationDate" type="date" v-model="localProduct.expirationDate" />
       </div>
       <div class="form-field">
-        <label for="category">{{ $t('products.category') }}</label>
-        <pv-select
-            id="category"
-            v-model="localProduct.category"
-            :options="categories"
-            option-label="label"
-            option-value="value"
-            :placeholder="$t('products.category')"
-        />
+        <label for="category">Categoría</label>
+        <pv-select id="category" v-model="localProduct.category" :options="categories" option-label="label" option-value="value" placeholder="select category"></pv-select>
+
       </div>
       <div class="form-actions">
-        <button type="button" @click="$emit('close')" class="cancel-button">{{ $t('products.cancel') }}</button>
+        <button type="button" @click="$emit('close')" class="cancel-button">Cancelar</button>
         <button type="submit" class="submit-button">
-          {{ isEdit ? $t('products.save') : $t('products.add') }}
+          {{ isEdit ? 'Guardar Cambios' : 'Agregar Producto' }}
         </button>
       </div>
     </form>
   </div>
 </template>
-
 
 <style scoped>
 .product-form-container { padding: 10px; }

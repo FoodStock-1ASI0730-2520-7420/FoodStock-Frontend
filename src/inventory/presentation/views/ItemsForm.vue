@@ -48,7 +48,6 @@ function handleSubmit() {
   </div>
 </template>
 
-
 <style scoped>
 .item-form-container { padding: 10px; }
 .form-field { margin-bottom: 15px; }

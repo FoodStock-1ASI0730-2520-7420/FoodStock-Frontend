@@ -11,3 +11,4 @@ const router = useRouter();
     <router-view />
   </div>
 </template>
+

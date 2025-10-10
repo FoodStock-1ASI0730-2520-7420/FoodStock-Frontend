@@ -48,17 +48,17 @@ store.fetchProducts();
 
 <template>
   <div class="products-view">
-    <h3>{{ $t('products.title') }}</h3>
-    <button @click="openAddForm" class="add-button">{{ $t('products.add') }}</button>
+    <h3>Lista de Productos</h3>
+    <button @click="openAddForm" class="add-button">Agregar Producto</button>
     <table class="products-table">
       <thead>
       <tr>
-        <th>{{ $t('products.name') }}</th>
-        <th>{{ $t('products.unitPrice') }}</th>
-        <th>{{ $t('products.quantity') }}</th>
-        <th>{{ $t('products.expirationDate') }}</th>
-        <th>{{ $t('products.category') }}</th>
-        <th>{{ $t('products.actions') }}</th>
+        <th>Nombre</th>
+        <th>Precio Unitario</th>
+        <th>Cantidad</th>
+        <th>Vencimiento</th>
+        <th>Categoría</th>
+        <th>Acciones</th>
       </tr>
       </thead>
       <tbody>
@@ -67,10 +67,10 @@ store.fetchProducts();
         <td>{{ product.unitPrice }}</td>
         <td>{{ product.quantity }}</td>
         <td>{{ product.expirationDate }}</td>
-        <td>{{ $t('categories.' + product.category) }}</td>
+        <td>{{ product.category }}</td>
         <td>
-          <button @click="openEditForm(product)" class="edit-button">{{ $t('products.edit') }}</button>
-          <button @click="handleDelete(product.idProduct)" class="delete-button">{{ $t('products.delete') }}</button>
+          <button @click="openEditForm(product)" class="edit-button">Editar</button>
+          <button @click="handleDelete(product.idProduct)" class="delete-button">Eliminar</button>
         </td>
       </tr>
       </tbody>
@@ -84,7 +84,6 @@ store.fetchProducts();
     />
   </div>
 </template>
-
 
 <style scoped>
 .products-view { padding: 20px; }

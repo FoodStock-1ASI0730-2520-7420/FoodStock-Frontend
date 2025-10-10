@@ -15,6 +15,14 @@
       "category": "Fruta",
       "idProduct": 1,
       "id": 1
+    },
+    {
+      "name": "Papa",
+      "unitPrice": 4,
+      "quantity": 8,
+      "expirationDate": "2025-10-18",
+      "category": "Verdura",
+      "id": 2
     }
   ]
 }
