@@ -68,22 +68,22 @@ onMounted(() => {
 
 <template>
   <div class="items-management">
-    <h2>Finished Dishes / Items Management</h2>
-    <p>Total Items: {{ store.items.length }}</p>
+    <h2>{{ $t('items.title') }}</h2>
+    <p>{{ $t('items.total') }}: {{ store.items.length }}</p>
 
-    <button @click="openAddItemModal">Add New Item</button>
+    <button @click="openAddItemModal">{{ $t('items.add') }}</button>
 
     <div v-if="store.errors.length && !store.itemsLoaded" class="error-message">
-      <p>Error loading items: {{ store.errors[0].message }}</p>
+      <p>{{ $t('items.errorLoading') }}: {{ store.errors[0].message }}</p>
     </div>
 
     <table v-if="store.items.length">
       <thead>
       <tr>
         <th>ID</th>
-        <th>Name</th>
-        <th>Price</th>
-        <th>Actions</th>
+        <th>{{ $t('items.name') }}</th>
+        <th>{{ $t('items.price') }}</th>
+        <th>{{ $t('items.actions') }}</th>
       </tr>
       </thead>
       <tbody>
@@ -92,15 +92,15 @@ onMounted(() => {
         <td>{{ item.name }}</td>
         <td>${{ item.price ? item.price.toFixed(2) : '0.00' }}</td>
         <td>
-          <button @click="openEditItemModal(item)">Edit</button>
-          <button @click="handleDeleteItem(item.id)">Delete</button>
+          <button @click="openEditItemModal(item)">{{ $t('items.edit') }}</button>
+          <button @click="handleDeleteItem(item.id)">{{ $t('items.delete') }}</button>
         </td>
       </tr>
       </tbody>
     </table>
 
-    <p v-else-if="store.itemsLoaded">No items found.</p>
-    <p v-else>Loading items...</p>
+    <p v-else-if="store.itemsLoaded">{{ $t('items.noItems') }}</p>
+    <p v-else>{{ $t('items.loading') }}</p>
   </div>
 
   <div v-if="isModalVisible" class="modal-overlay" @click.self="closeModal">
@@ -114,6 +114,7 @@ onMounted(() => {
     </div>
   </div>
 </template>
+
 
 <style scoped>
 table {

@@ -1,6 +1,48 @@
 {
+  "inventory": {
+    "title": "Inventory Management",
+    "viewItems": "View Items",
+    "viewProducts": "View Products"
+  },
   "option": {
     "home": "Home",
     "inventory": "Inventory"
+  },
+  "items": {
+    "title": "Finished Dishes / Items Management",
+    "total": "Total Items",
+    "add": "Add New Item",
+    "edit": "Edit Finished Dish",
+    "name": "Name",
+    "price": "Price",
+    "cancel": "Cancel",
+    "save": "Save Changes",
+    "addItem": "Add Item",
+    "actions": "Actions",
+    "delete": "Delete",
+    "noItems": "No items found.",
+    "loading": "Loading items...",
+    "errorLoading": "Error loading items"
+  },
+  "products": {
+    "title": "Product List",
+    "add": "Add Product",
+    "edit": "Edit Product",
+    "save": "Save Changes",
+    "name": "Name",
+    "unitPrice": "Unit Price",
+    "quantity": "Quantity",
+    "expirationDate": "Expiration Date",
+    "category": "Category",
+    "actions": "Actions",
+    "delete": "Delete",
+    "cancel": "Cancel"
+  },
+  "categories": {
+    "fruit": "Fruit",
+    "vegetable": "Vegetable",
+    "spices": "Spices",
+    "proteins": "Proteins",
+    "dairy": "Dairy"
   }
 }

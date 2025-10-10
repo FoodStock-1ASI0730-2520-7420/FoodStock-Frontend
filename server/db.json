@@ -1,4 +1,20 @@
 {
-  "items": [],
-  "products": []
+  "items": [
+    {
+      "name": "Hamburguesa",
+      "price": 5,
+      "id": 1
+    }
+  ],
+  "products": [
+    {
+      "name": "Platano",
+      "unitPrice": 2,
+      "quantity": 4,
+      "expirationDate": "2025-10-23",
+      "category": "Fruta",
+      "idProduct": 1,
+      "id": 1
+    }
+  ]
 }

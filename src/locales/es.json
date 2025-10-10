@@ -1,6 +1,48 @@
 {
+  "inventory": {
+    "title": "Gestión de Inventario",
+    "viewItems": "Ver Ítems",
+    "viewProducts": "Ver Productos"
+  },
   "option": {
     "home": "Inicio",
     "inventory": "Inventario"
+  },
+  "items": {
+    "title": "Gestión de Platos Terminados / Ítems",
+    "total": "Total de Ítems",
+    "add": "Agregar Nuevo Ítem",
+    "edit": "Editar Plato Terminado",
+    "name": "Nombre",
+    "price": "Precio",
+    "cancel": "Cancelar",
+    "save": "Guardar Cambios",
+    "addItem": "Agregar Ítem",
+    "actions": "Acciones",
+    "delete": "Eliminar",
+    "noItems": "No se encontraron ítems.",
+    "loading": "Cargando ítems...",
+    "errorLoading": "Error al cargar ítems"
+  },
+  "products": {
+    "title": "Lista de Productos",
+    "add": "Agregar Producto",
+    "edit": "Editar Producto",
+    "save": "Guardar Cambios",
+    "name": "Nombre",
+    "unitPrice": "Precio Unitario",
+    "quantity": "Cantidad",
+    "expirationDate": "Fecha de Vencimiento",
+    "category": "Categoría",
+    "actions": "Acciones",
+    "delete": "Eliminar",
+    "cancel": "Cancelar"
+  },
+  "categories": {
+    "fruit": "Fruta",
+    "vegetable": "Verdura",
+    "spices": "Especias",
+    "proteins": "Proteínas",
+    "dairy": "Lácteos"
   }
 }

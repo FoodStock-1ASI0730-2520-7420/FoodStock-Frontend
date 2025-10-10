@@ -29,27 +29,25 @@ function handleSubmit() {
 <template>
   <div class="item-form-container">
     <form @submit.prevent="handleSubmit">
-      <h4>{{ isEdit ? 'Edit Finished Dish' : 'Add New Dish' }}</h4>
-
+      <h4>{{ isEdit ? $t('items.edit') : $t('items.add') }}</h4>
       <div class="form-field">
-        <label for="name">Name</label>
+        <label for="name">{{ $t('items.name') }}</label>
         <input id="name" type="text" v-model="localItem.name" required />
       </div>
-
       <div class="form-field">
-        <label for="price">Price</label>
+        <label for="price">{{ $t('items.price') }}</label>
         <input id="price" type="number" step="0.01" v-model.number="localItem.price" required />
       </div>
-
       <div class="form-actions">
-        <button type="button" @click="$emit('close')" class="cancel-button">Cancel</button>
+        <button type="button" @click="$emit('close')" class="cancel-button">{{ $t('items.cancel') }}</button>
         <button type="submit" class="submit-button">
-          {{ isEdit ? 'Save Changes' : 'Add Item' }}
+          {{ isEdit ? $t('items.save') : $t('items.addItem') }}
         </button>
       </div>
     </form>
   </div>
 </template>
+
 
 <style scoped>
 .item-form-container { padding: 10px; }
