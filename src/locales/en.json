@@ -6,6 +6,10 @@
   },
   "option": {
     "home": "Home",
+    "sales": "Sales",
+    "suppliers": "Suppliers",
+    "reservation": "Reservation",
+    "reports": "Reports",
     "inventory": "Inventory"
   },
   "items": {
