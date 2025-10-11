@@ -12,18 +12,13 @@ const toggleDrawer = () => {
   drawer.value = !drawer.value;
 }
 const items = [
-  {label: 'option.home', to: '/home'}
+  {label: 'option.home', to: '/home'},
+  {label: 'option.suppliers', to: '/suppliers'}
 ];
 </script>
 
 <template>
-  <aside class="sidebar">
-    <pv-menu :model="items">
-      <template #start>
-        <h1>FoodStock</h1>
-      </template>
-    </pv-menu>
-  </aside>
+
   <div class="header">
     <pv-toolbar class="bg-primary">
       <template #start>

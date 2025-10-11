@@ -1,1 +1,5 @@
-{}
+{ "option": {
+  "home": "Inicio",
+  "suppliers": "proveedores"
+}
+}
