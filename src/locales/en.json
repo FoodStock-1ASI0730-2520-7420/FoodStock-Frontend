@@ -6,6 +6,35 @@
     "cancel": "Cancel",
     "saleType": "Type of sale",
     "paymentMethod": "Payment method",
-    "waiter": "Waiter"
+    "waiter": "Waiter",
+    "addItem": "Add a Item",
+    "name": "Name",
+    "price": "Price",
+    "quantity": "Quantity",
+    "add": "Add",
+    "itemList": "List of items",
+    "selectTypeSale": "Select a sale type",
+    "selectPaymentMethod": "Select a payment method",
+    "selectItem": "Select an item",
+    "total": "Total"
+  },
+  "sales": {
+    "title": "Sales",
+    "saleType":"Type of sale",
+    "paymentMethod": "Payment method",
+    "totalFinal": "Total",
+    "date": "Date",
+    "time": "Time",
+    "actions": "Actions",
+    "delete-header": "Delete",
+    "confirm-delete": "Do you want to delete this sale?",
+    "new": "New"
+  },
+  "saleItems": {
+    "title": "List of items sold",
+    "name":"Name",
+    "priceUnit": "Unit price",
+    "quantity": "Quantity",
+    "subtotal": "Subtotal"
   }
 }

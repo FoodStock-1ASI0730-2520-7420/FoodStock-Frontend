@@ -4,7 +4,6 @@ import LanguageSwitcher from "./language-switcher.vue";
 import {ref} from "vue";
 import {useI18n} from "vue-i18n";
 import FooterContent from "./footer-content.vue";
-import {Menu as PvMenu} from "primevue";
 const { t } = useI18n();
 
 const drawer = ref(false);
@@ -13,7 +12,8 @@ const toggleDrawer = () => {
 }
 const items = [
   {label: 'option.home', to: '/home'},
-  {label: 'option.sales', to: '/sales'}
+  {label: 'option.sales', to: '/sales/list'},
+  {label: 'option.inventory', to: '/inventory/items'}
 ];
 </script>
 

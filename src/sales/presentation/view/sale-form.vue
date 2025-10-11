@@ -1,17 +1,20 @@
 <script setup>
 import {useI18n} from "vue-i18n";
 import {useRoute, useRouter} from "vue-router";
-import {computed, onMounted, ref} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import useSalesStore from "../../application/sales.store.js";
 import {Sale} from "../../domain/model/sale.entity.js";
 import {Button as PvButton, InputNumber as PvInputNumber, InputText as PvInputText, Select as PvSelect} from "primevue";
 import {SaleItem} from "../../domain/model/saleItem.entity.js";
+import {InventoryApi} from "../../../inventory/infrastructure/inventory-api.js";
 
 const {t} = useI18n();
 const route = useRoute();
 const router = useRouter();
+const inventoryApi = new InventoryApi();
+const saleId = Number(route.params.id);
 const store = useSalesStore();
-const {errors, sales, salesLoaded, addSale, updateSale, fetchSales} = store;
+const {errors, sales, saleItems, salesLoaded, saleItemsLoaded, addSale, updateSale, fetchSales} = store;
 
 const saleType = [
   { label: "In-Person", value: 'in-person' },
@@ -26,17 +29,39 @@ const paymentMethods = [
 
 const form = ref({saleType: '', paymentMethod: '', waiter: '', saleItems: []});
 const isEdit = computed(() => !!route.params.id);
+const items = ref([]);
+const itemsLoaded = ref(false);
 
-const saleItemForm = ref({name: '', priceUnit: 0, quantity: 1});
+const saleItemForm = ref({itemId: null, quantity: 1});
 
-onMounted(() => {
+onMounted(async() => {
   if (!salesLoaded) fetchSales();
   if (isEdit.value) {
     const sale = getSaleById(route.params.id);
     if (sale) {
       Object.assign(form.value, sale);
+
+      const assignItems = () => {
+        form.value.saleItems = saleItems.filter(saleItem => saleItem.saleId === saleId);
+      };
+
+      if(!saleItemsLoaded){
+        const unwatch = watch(
+            () => saleItemsLoaded,
+            (loaded) => {
+              if(loaded){
+                assignItems();
+                unwatch();
+              }
+            }
+        )
+      } else{
+        assignItems();
+      }
     } else router.push({name: 'sales-list'});
   }
+  items.value = await inventoryApi.getItems();
+  itemsLoaded.value = true;
 });
 
 const totalFinal = computed(() => {
@@ -88,9 +113,32 @@ const saveSale = async () => {
   navigateBack();
 };
 
+const editingIndex = ref(null);
+
+const selectedItem = computed(() =>
+    items.value.find(item => item.id == saleItemForm.value.itemId));
+
 const addSaleItem = () => {
-  form.value.saleItems.push({ ...saleItemForm.value})
-  saleItemForm.value = { name: '', priceUnit: 0, quantity: 1};
+  if(!selectedItem.value) return;
+
+  const saleItemData = {
+    itemId: selectedItem.value.id,
+    name: selectedItem.value.name,
+    priceUnit: selectedItem.value.price,
+    quantity: saleItemForm.value.quantity
+  };
+  if(editingIndex.value !== null){
+    form.value.saleItems[editingIndex.value] = saleItemData;
+    editingIndex.value = null;
+  }else{
+    form.value.saleItems.push(saleItemData)
+  }
+  saleItemForm.value = {itemId: null, quantity: 1};
+}
+
+const editSaleItem = (index) => {
+  editingIndex.value = index;
+  saleItemForm.value = { ...form.value.saleItems[index]};
 }
 
 const removeSaleItem = (index) => {
@@ -114,7 +162,7 @@ const navigateBack = () => {
             :options="saleType"
             optionLabel="label"
             optionValue="value"
-            placeholder="Select a type of sale"
+            :placeholder="t('sale.selectTypeSale')"
             class="w-full"
         />
       </div>
@@ -126,7 +174,7 @@ const navigateBack = () => {
             :options="paymentMethods"
             optionLabel="label"
             optionValue="value"
-            placeholder="Select a payment method"
+            :placeholder="t('sale.selectPaymentMethod')"
             class="w-full"
         />
       </div>
@@ -139,30 +187,41 @@ const navigateBack = () => {
         <h2>{{ t('sale.addItem')}}</h2>
           <div class="field mb-2">
             <label for="name">{{ t('sale.name') }}</label>
-            <pv-input-text id="name" v-model="saleItemForm.name" class="w-full" />
+            <pv-select
+                id="item"
+                v-model="saleItemForm.itemId"
+                :options="items"
+                optionLabel="name"
+                optionValue="id"
+                :placeholder="t('sale.selectItem')"
+                class="w-full"
+            />
           </div>
           <div class="field mb-2">
             <label for="price">{{ t('sale.price') }}</label>
-            <pv-input-number id="price" v-model="saleItemForm.priceUnit" class="w-full" />
+            <br>
+            <span class="font-bold">{{selectedItem?.price}}</span>
           </div>
           <div class="field mb-2">
             <label for="quantity">{{ t('sale.quantity') }}</label>
-            <pv-input-number id="quantity" v-model="saleItemForm.quantity" class="w-full" />
+            <pv-input-number id="quantity" v-model="saleItemForm.quantity" class="w-full"/>
           </div>
-        <pv-button type="button" :label="t('sale.addItem')" icon="pi pi-plus" @click="addSaleItem"></pv-button>
+        <pv-button type="button" :label="t('sale.add')" icon="pi pi-plus" @click="addSaleItem"></pv-button>
         </div>
       <div v-if="form.saleItems.length">
         <h3>{{ t('sale.itemList')}}</h3>
         <ul>
           <li v-for="(item, index) in form.saleItems" :key="index" class="mb-2 border p-2 rounded">
             {{ item.name}} - {{ new SaleItem(item).subtotal}}
+            <pv-button type="button" icon="pi pi-pencil" @click="editSaleItem(index)"></pv-button>
             <pv-button type="button" icon="pi pi-trash" severity="danger" @click="removeSaleItem(index)"></pv-button>
           </li>
         </ul>
       </div>
       <div class="field mb-3">
-        <label>{{ t('sale.total')}}</label>
-        <span class="font-bold">{{ totalFinal}}</span>
+        <label class="font-bold">{{ t('sale.total')}}: </label>
+        <br>
+        <span>{{ totalFinal}}</span>
       </div>
       <pv-button type="submit" :label="t('sale.save')" icon="pi pi-save" />
       <pv-button :label="t('sale.cancel')" severity="secondary" class="ml-2" @click="navigateBack" />

@@ -1,1 +1,38 @@
-{}
+{
+  "sale":{
+    "new-title": "Crear nueva venta",
+    "edit-title": "Editar venta",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "saleType": "Tipo de venta",
+    "paymentMethod": "Método de pago",
+    "waiter": "Mesero",
+    "addItem": "Agregar un item",
+    "name": "Nombre",
+    "price": "Precio",
+    "quantity": "Cantidad",
+    "add": "Agregar",
+    "itemList": "Lista de items",
+    "selectTypeSale": "Selecciona un tipo de venta",
+    "selectPaymentMethod": "Selecciona un método de pago",
+    "selectItem": "Selecciona un item",
+    "total": "Total"
+  },
+  "sales": {
+    "title": "Ventas",
+    "totalFinal": "Total",
+    "date": "Fecha",
+    "time": "Hora",
+    "actions": "Acciones",
+    "delete-header": "Eliminar",
+    "confirm-delete": "¿Quieres eliminar esta venta?",
+    "new": "Nuevo"
+  },
+  "saleItems": {
+    "title": "Lista de items vendidos",
+    "name":"Nombre",
+    "priceUnit": "Precio unitario",
+    "quantity": "Cantidad",
+    "subtotal": "Subtotal"
+  }
+}

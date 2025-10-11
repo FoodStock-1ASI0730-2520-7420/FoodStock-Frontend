@@ -31,8 +31,8 @@ const useSalesStore= defineStore('sales', () => {
         });
     }
 
-    function fetchSaleItems() {
-        salesApi.getSaleItems().then(response => {
+    function fetchSaleItems(sale) {
+        salesApi.getSaleItemBySaleId(sale).then(response => {
             saleItems.value = SaleItemAssembler.toEntitiesFromResponse(response);
             saleItemsLoaded.value = true;
             console.log(saleItemsLoaded.value);
@@ -82,9 +82,8 @@ const useSalesStore= defineStore('sales', () => {
         });
     }
 
-    function getSaleItemById(sale, saleItem) {
-        let idNum = parseInt(saleItem);
-        return saleItems.value.find(saleItem => saleItem["id"] === idNum);
+    function getSaleItemBySaleId(sale) {
+        return saleItems.value.filter(saleItem => saleItem["id"] === sale);
     }
 
     function addSaleItem(saleItem) {
@@ -136,7 +135,7 @@ const useSalesStore= defineStore('sales', () => {
         addSaleItem,
         updateSaleItem,
         deleteSaleItem,
-        getSaleItemById
+        getSaleItemBySaleId
     }
 });
 
