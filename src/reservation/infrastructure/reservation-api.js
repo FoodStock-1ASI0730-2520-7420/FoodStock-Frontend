@@ -1,12 +1,12 @@
 export const ReservationAPI = {
     fetchReservations: async () => {
-        const res = await fetch('http://localhost:3000/reservations');
+        const res = await fetch('https://68ea0557f1eeb3f856e5cfc4.mockapi.io/api/v1/reservations');
         return await res.json();
     },
 
     saveReservation: async (reservation) => {
         const { idReservation, ...data } = reservation;
-        const res = await fetch('http://localhost:3000/reservations', {
+        const res = await fetch('https://68ea0557f1eeb3f856e5cfc4.mockapi.io/api/v1/reservations', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data),
@@ -15,7 +15,7 @@ export const ReservationAPI = {
     },
 
     updateReservation: async (id, updatedData) => {
-        const res = await fetch(`http://localhost:3000/reservations/${id}`, {
+        const res = await fetch(`https://68ea0557f1eeb3f856e5cfc4.mockapi.io/api/v1/reservations/${id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(updatedData),
@@ -24,7 +24,7 @@ export const ReservationAPI = {
     },
 
     deleteReservation: async (id) => {
-        const res = await fetch(`http://localhost:3000/reservations/${id}`, { method: 'DELETE' });
+        const res = await fetch(`https://68ea0557f1eeb3f856e5cfc4.mockapi.io/api/v1/reservations/${id}`, { method: 'DELETE' });
         return res.ok;
     }
 };
