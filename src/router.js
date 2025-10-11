@@ -1,6 +1,6 @@
 import {createRouter, createWebHistory, RouterView} from "vue-router";
 import Home from "./shared/presentation/views/home.vue";
-import salesReportRoutes from "./sales-reports/presentation/salesReport-routes.js";
+import reportsRoutes from "./reports/reports.routes.js";
 
 // TODO: Define lazy-loaded components for routes
 const pageNotFound = () => import('./shared/presentation/views/page-not-found.vue');
@@ -8,11 +8,9 @@ const routes = [
     { path: '/home',            name: 'home',       component: Home,        meta: { title: 'Home' } },
     { path: '/',                redirect: '/home' },
     {
-        path: "/sales-reports",
-        name: "sales-reports",
+        path: "/reports",
         component: RouterView,
-        children: salesReportRoutes,
-        meta: { title: "Sales Reports" },
+        children: reportsRoutes
     },
     { path: '/:pathMatch(.*)*', name: 'not-found', component: pageNotFound, meta: { title: 'Page Not Found' } }
 ];

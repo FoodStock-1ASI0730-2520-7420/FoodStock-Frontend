@@ -4,24 +4,41 @@ import { useSalesReportStore } from "../../application/salesReport.store.js";
 import ReportExport from "./salesReportExport.vue";
 
 const store = useSalesReportStore();
+
 const fromDate = ref("");
 const toDate = ref("");
 const showAllDishesModal = ref(false);
 const showAllPaymentsModal = ref(false);
 
-// Load data when component mounts
+// Load data on mount
 onMounted(async () => {
-  await store.fetchReports();           // Fetch sales reports
-  await store.fetchPaymentSummary();    // Fetch payment methods summary
-  await store.fetchBestSellingDishes(); // Fetch best selling dishes
+  await store.fetchReports();           // Sales
+  await store.fetchPaymentSummary();    // Summary by payment method
+  await store.fetchBestSellingDishes(); // Best-selling dishes
 });
 
-// Computed references for store data
-const reportData = computed(() => store.reports || {});
+// Computed properties for store data
 const saleItems = computed(() => store.saleItems || []);
 const paymentSummary = computed(() => store.paymentSummary || []);
 
-// Format currency values
+// Inventory-like summary
+const salesSummary = computed(() => {
+  const reports = store.reports || [];
+  const totalRevenue = reports.reduce((sum, r) => sum + (Number(r.total) || 0), 0);
+  const totalProfit = reports.reduce((sum, r) => sum + (Number(r.profit) || 0), 0);
+  const totalSales = reports.length;
+  return { totalRevenue, totalProfit, totalSales };
+});
+
+// Total amount across all payment methods
+const totalAmountAllMethods = computed(() => {
+  return paymentSummary.value.reduce(
+      (sum, method) => sum + (Number(method.total) || 0),
+      0
+  );
+});
+
+// Currency formatting
 const formatCurrency = (value) => {
   if (!value) return "S/. 0.00";
   return `S/. ${Number(value).toLocaleString("en-US", {
@@ -29,41 +46,30 @@ const formatCurrency = (value) => {
     maximumFractionDigits: 2,
   })}`;
 };
-
-// Compute total amount across all payment methods
-const totalAmountAllMethods = computed(() => {
-  return paymentSummary.value.reduce(
-      (sum, method) => sum + (Number(method.total) || 0),
-      0
-  );
-});
 </script>
 
 <template>
   <div class="report-container">
-    <!-- GENERAL OVERVIEW -->
+    <!-- General Summary -->
     <section class="card overview">
       <h2>General Overview</h2>
       <div class="overview-grid">
         <div class="overview-item">
-          <h3>{{ formatCurrency(reportData.totalRevenue || 21190) }}</h3>
           <p>Total Revenue</p>
+          <h3>{{ formatCurrency(salesSummary.totalRevenue) }}</h3>
         </div>
         <div class="overview-item">
-          <h3>{{ formatCurrency(reportData.totalProfit || 18300) }}</h3>
-          <p class="gain">Net Profit</p>
+          <p>Net Profit</p>
+          <h3>{{ formatCurrency(salesSummary.totalProfit) }}</h3>
         </div>
         <div class="overview-item">
-          <h3>{{ formatCurrency(reportData.totalSales || 17432) }}</h3>
-          <p class="sales">Total Sales</p>
-        </div>
-        <div class="overview-date">
-          <span>Monthly</span>
+          <p>Total Sales</p>
+          <h3>{{ salesSummary.totalSales }}</h3>
         </div>
       </div>
     </section>
 
-    <!-- POPULAR PAYMENT METHODS -->
+    <!-- Popular Payment Methods -->
     <section class="card items">
       <div class="header">
         <h2>Popular Payment Methods</h2>
@@ -78,12 +84,12 @@ const totalAmountAllMethods = computed(() => {
         </tr>
         </thead>
         <tbody>
-        <tr v-for="(method, index) in paymentSummary.slice(0, 4)" :key="index">
+        <tr v-for="(method, index) in paymentSummary.slice(0,4)" :key="index">
           <td>{{ method.method || "Unknown" }}</td>
           <td>{{ method.transactions || 0 }}</td>
           <td>{{ formatCurrency(method.total) }}</td>
         </tr>
-        <tr style="font-weight: bold; border-top: 2px solid #ddd;">
+        <tr style="font-weight:bold; border-top:2px solid #ddd;">
           <td>Total</td>
           <td></td>
           <td>{{ formatCurrency(totalAmountAllMethods) }}</td>
@@ -92,7 +98,7 @@ const totalAmountAllMethods = computed(() => {
       </table>
     </section>
 
-    <!-- BEST SELLING DISHES -->
+    <!-- Best-Selling Dishes -->
     <section class="card items">
       <div class="header">
         <h2>Best Selling Dishes</h2>
@@ -110,7 +116,7 @@ const totalAmountAllMethods = computed(() => {
         </tr>
         </thead>
         <tbody>
-        <tr v-for="item in saleItems.slice(0, 4)" :key="item.name">
+        <tr v-for="item in saleItems.slice(0,4)" :key="item.id">
           <td>{{ item.name || "Unknown" }}</td>
           <td>{{ item.id }}</td>
           <td>{{ item.category || "N/A" }}</td>
@@ -122,19 +128,15 @@ const totalAmountAllMethods = computed(() => {
       </table>
     </section>
 
-    <!-- EXPORT COMPONENT -->
+    <!-- Export -->
     <ReportExport />
 
-    <!-- MODAL — ALL PAYMENTS -->
-    <div
-        v-if="showAllPaymentsModal"
-        class="modal-overlay"
-        @click.self="showAllPaymentsModal = false"
-    >
+    <!-- Modal — All Payments -->
+    <div v-if="showAllPaymentsModal" class="modal-overlay" @click.self="showAllPaymentsModal = false">
       <div class="modal-content">
         <div class="modal-header">
           <h3>All Payment Transactions</h3>
-          <button class="close-btn" @click="showAllPaymentsModal = false">✖</button>
+          <button class="close-btn" @click="showAllPaymentsModal = false">X</button>
         </div>
         <table>
           <thead>
@@ -163,16 +165,12 @@ const totalAmountAllMethods = computed(() => {
       </div>
     </div>
 
-    <!-- MODAL — ALL DISHES -->
-    <div
-        v-if="showAllDishesModal"
-        class="modal-overlay"
-        @click.self="showAllDishesModal = false"
-    >
+    <!-- Modal — All Dishes -->
+    <div v-if="showAllDishesModal" class="modal-overlay" @click.self="showAllDishesModal = false">
       <div class="modal-content">
         <div class="modal-header">
           <h3>All Dishes</h3>
-          <button class="close-btn" @click="showAllDishesModal = false">✖</button>
+          <button class="close-btn" @click="showAllDishesModal = false">X</button>
         </div>
         <table>
           <thead>
@@ -200,17 +198,6 @@ const totalAmountAllMethods = computed(() => {
     </div>
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-
 
 <style scoped>
 .report-container {
@@ -315,7 +302,7 @@ button.pdf {
   background-color: #dc3545;
 }
 
-/* 🔹 MODAL STYLES */
+/* Modal Styles */
 .modal-overlay {
   position: fixed;
   top: 0;

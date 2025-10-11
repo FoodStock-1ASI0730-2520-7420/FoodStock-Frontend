@@ -1,7 +1,7 @@
 // src/sales-reports/domain/services/salesReport.service.js
-import { SalesApi } from "../../../sales/infrastructure/sales-api.js";
-import { SaleAssembler } from "../../../sales/infrastructure/sale.assembler.js";
-import { SaleItemAssembler } from "../../../sales/infrastructure/saleItem.assembler.js";
+import { SalesApi } from "../../../../sales/infrastructure/sales-api.js";
+import { SaleAssembler } from "../../../../sales/infrastructure/sale.assembler.js";
+import { SaleItemAssembler } from "../../../../sales/infrastructure/saleItem.assembler.js";
 
 export class SalesReportService {
     constructor() {
