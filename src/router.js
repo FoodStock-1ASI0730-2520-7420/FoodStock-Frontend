@@ -1,8 +1,8 @@
 import {createRouter, createWebHistory, RouterView} from "vue-router";
 import Home from "./shared/presentation/views/home.vue";
-import InventoryView from './Inventory/presentation/views/InventoryView.vue';
-import ItemsView from './Inventory/presentation/views/ItemsView.vue';
-import ProductsView from './Inventory/presentation/views/ProductsView.vue';
+import InventoryView from './inventory/presentation/views/InventoryView.vue';
+import ItemsView from './inventory/presentation/views/ItemsView.vue';
+import ProductsView from './inventory/presentation/views/ProductsView.vue';
 import SuppliersView from './suppliers/presentation/views/SuppliersView.vue';
 import salesRoutes from "./sales/presentation/sale-routes.js";
 import reportsRoutes from "./reports/reports.routes.js";
