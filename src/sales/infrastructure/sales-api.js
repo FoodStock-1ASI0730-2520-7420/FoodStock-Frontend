@@ -1,17 +1,17 @@
-import {BaseApi} from "../../shared/infrastructure/base-api.js";
-import {BaseEndpoint} from "../../shared/infrastructure/base-endpoint.js";
+import {BaseApi3} from "../../shared/infrastructure/base-api-3.js";
+import {BaseEndpoint3} from "../../shared/infrastructure/base-endpoint-3.js";
 
 const salesEndpointPath    = import.meta.env.VITE_SALES_ENDPOINT_PATH;
 const saleItemsEndpointPath    = import.meta.env.VITE_SALEITEMS_ENDPOINT_PATH;
 
-export class SalesApi extends BaseApi {
+export class SalesApi extends BaseApi3 {
     #salesEndpoint;
     #saleItemsEndpoint;
 
     constructor() {
         super();
-        this.#salesEndpoint = new BaseEndpoint(this, salesEndpointPath);
-        this.#saleItemsEndpoint = new BaseEndpoint(this, saleItemsEndpointPath);
+        this.#salesEndpoint = new BaseEndpoint3(this, salesEndpointPath);
+        this.#saleItemsEndpoint = new BaseEndpoint3(this, saleItemsEndpointPath);
     }
 
     getSales() {
