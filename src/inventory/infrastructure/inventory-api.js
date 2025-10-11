@@ -1,21 +1,22 @@
 // src/inventory/infrastructure/inventory-api.js
 
-import { BaseApi } from "../../shared/infrastructure/base-api.js";
-import { BaseEndpoint } from "../../shared/infrastructure/base-endpoint.js";
+import { BaseApi2 } from "../../shared/infrastructure/base-api-2.js";
+
+import { BaseEndpoint2 } from "../../shared/infrastructure/base-endpoint-2.js";
 import { ItemAssembler } from './item.assembler';
 import { ProductAssembler } from './product.assembler';
 
 const itemsEndpointPath = import.meta.env.VITE_ITEMS_ENDPOINT_PATH || 'items';
 const productsEndpointPath = import.meta.env.VITE_PRODUCTS_ENDPOINT_PATH || 'products';
 
-export class InventoryApi extends BaseApi {
+export class InventoryApi extends BaseApi2 {
     #itemsEndpoint;
     #productsEndpoint;
 
     constructor() {
         super();
-        this.#itemsEndpoint = new BaseEndpoint(this, itemsEndpointPath);
-        this.#productsEndpoint = new BaseEndpoint(this, productsEndpointPath);
+        this.#itemsEndpoint = new BaseEndpoint2(this, itemsEndpointPath);
+        this.#productsEndpoint = new BaseEndpoint2(this, productsEndpointPath);
     }
 
     // --- Métodos para Item ---
