@@ -1,3 +1,11 @@
 {
-  "suppliers": []
+  "suppliers": [
+    {
+      "name": "gonzalo",
+      "contact": "123456789",
+      "type": "papa",
+      "email": "example@gmail.com",
+      "id": 1
+    }
+  ]
 }
