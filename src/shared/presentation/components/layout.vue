@@ -13,14 +13,12 @@ const toggleDrawer = () => {
 }
 const items = [
   {label: 'option.home', to: '/home'},
+  {label: 'option.inventory', to: '/inventory/items'},
   {label: 'option.inventory', to: '/inventory/items'}
 ];
-
-
 </script>
 
 <template>
-
   <div class="header">
     <pv-toolbar class="bg-primary">
       <template #start>
