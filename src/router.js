@@ -4,13 +4,14 @@ import InventoryView from './Inventory/presentation/views/InventoryView.vue';
 import ItemsView from './Inventory/presentation/views/ItemsView.vue';
 import ProductsView from './Inventory/presentation/views/ProductsView.vue';
 import SuppliersView from './suppliers/presentation/views/SuppliersView.vue';
-
+import salesRoutes from "./sales/presentation/sale-routes.js";
 // TODO: Define lazy-loaded components for routes
 const pageNotFound = () => import('./shared/presentation/views/page-not-found.vue');
 const routes = [
     { path: '/home',            name: 'home',       component: Home,        meta: { title: 'Home' } },
     { path: '/',                redirect: '/home' },
-    { path: '/:pathMatch(.*)*', name: 'not-found', component: pageNotFound, meta: { title: 'Page Not Found' },
+    { path: '/sales',            name: 'sales',       children: salesRoutes },
+    { path: '/:pathMatch(.*)*', name: 'not-found', component: pageNotFound, meta: { title: 'Page Not Found' } },
     {
         path: '/suppliers',
         name: 'SuppliersManagement',

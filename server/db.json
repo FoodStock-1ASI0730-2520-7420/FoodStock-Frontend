@@ -1,28 +1,9 @@
 {
-  "items": [
-    {
-      "name": "Hamburguesa",
-      "price": 5,
-      "id": 1
-    }
+  "sales": [
   ],
-  "products": [
-    {
-      "name": "Platano",
-      "unitPrice": 2,
-      "quantity": 4,
-      "expirationDate": "2025-10-23",
-      "category": "Fruta",
-      "idProduct": 1,
-      "id": 1
-    },
-    {
-      "name": "Papa",
-      "unitPrice": 4,
-      "quantity": 8,
-      "expirationDate": "2025-10-18",
-      "category": "Verdura",
-      "id": 2
-    }
-  ]
+  "saleItems": [
+  ],
+  "items": [
+  ],
+  "products": []
 }
