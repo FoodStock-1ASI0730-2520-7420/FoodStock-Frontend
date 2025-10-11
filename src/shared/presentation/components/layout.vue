@@ -13,7 +13,7 @@ const toggleDrawer = () => {
 const items = [
   {label: 'option.home', to: '/home'},
   {label: 'option.sales', to: '/sales/list'},
-  {label: 'option.inventory', to: '/inventory/items'}
+  {label: 'option.suppliers', to: '/suppliers'}
 ];
 </script>
 
