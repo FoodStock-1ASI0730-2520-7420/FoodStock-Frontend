@@ -3,7 +3,7 @@ import Home from "./shared/presentation/views/home.vue";
 import InventoryView from './inventory/presentation/views/InventoryView.vue';
 import ItemsView from './inventory/presentation/views/ItemsView.vue';
 import ProductsView from './inventory/presentation/views/ProductsView.vue';
-import SuppliersView from './suppliers/presentation/views/SuppliersView.vue';
+import SuppliersView from './suppliers/presentation/views/suppliersView.vue';
 import salesRoutes from "./sales/presentation/sale-routes.js";
 import reportsRoutes from "./reports/reports.routes.js";
 import ReservationView from "./reservation/presentation/views/ReservationView.vue";

@@ -1,7 +1,8 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useSupplierStore } from '../../application/useSupplierStore.js';
-import SuppliersForm from './suppliersForm.vue';
+import SuppliersForm from "./suppliersForm.vue";
+
 
 const store = useSupplierStore();
 
