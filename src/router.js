@@ -5,6 +5,7 @@ import ItemsView from './Inventory/presentation/views/ItemsView.vue';
 import ProductsView from './Inventory/presentation/views/ProductsView.vue';
 import SuppliersView from './suppliers/presentation/views/SuppliersView.vue';
 import salesRoutes from "./sales/presentation/sale-routes.js";
+import ReservationView from "./reservation/presentation/views/ReservationView.vue";
 // TODO: Define lazy-loaded components for routes
 const pageNotFound = () => import('./shared/presentation/views/page-not-found.vue');
 const routes = [
@@ -36,6 +37,12 @@ const routes = [
                 meta: { title: 'Manage Products' }
             }
         ]
+    },
+    {
+        path: '/reservations',
+        name: 'reservations',
+        component: ReservationView,
+        meta: { title: 'Reservations' }
     }
 ];
 

@@ -14,7 +14,8 @@ const items = [
   {label: 'option.home', to: '/home'},
   {label: 'option.inventory', to: '/inventory/items'},
   {label: 'option.sales', to: '/sales/list'},
-  {label: 'option.suppliers', to: '/suppliers'}
+  {label: 'option.suppliers', to: '/suppliers'},
+  { label: "option.reservation", to: "/reservations" }
 ];
 </script>
 
